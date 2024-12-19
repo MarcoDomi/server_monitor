@@ -1,6 +1,6 @@
 import socket
 import ssl
-import datetime
+from datetime import datetime
 import pickle
 import subprocess
 
@@ -21,6 +21,7 @@ class server:
         self.history.insert(0, item)
 
 def checkConnection(server):
+    success = False
     try:
         if server.connectionType == "plain":
             socket.create_connection((server.name, server.port), timeout=10)
@@ -32,12 +33,27 @@ def checkConnection(server):
         elif server.connectionType == "ping":
             subprocess.check_output(f"ping -c 1 {server.name}", shell=True, universal_newlines=True)
             print(f"Pinged {server.name}")
+        success = True
     except TimeoutError:
         print("Connection timed out")
     except:
         print("Unknown error?")
 
+    return success
 
-s = server("redsddit.com", 443, 'ssl')
+def main():
+    
+    servers = [
+        server("reddit.com", 443, "ssl"),
+        server("google.com", 80, "plain"),
+        server("youtube.com", 80, "ping"),
+        server("wikipedia.org", 443, "ssl"),
+    ]
+    
+    for s in servers:
+        success = checkConnection(s)
+        s.add_history(f"{s.name} - Date: {datetime.now()} - Connection result: {success}")
+        print(len(s.history))
 
-checkConnection(s)
+
+main()
