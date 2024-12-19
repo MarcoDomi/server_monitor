@@ -3,6 +3,7 @@ import ssl
 from datetime import datetime
 import pickle
 import subprocess
+import os
 
 class server:
     def __init__(self, name, port, type):
@@ -42,17 +43,22 @@ def checkConnection(server):
     return success
 
 def main():
-    
-    servers = [
-        server("reddit.com", 443, "ssl"),
-        server("google.com", 80, "plain"),
-        server("youtube.com", 80, "ping"),
-        server("wikipedia.org", 443, "ssl"),
-    ]
+
+    if os.path.exists('server_data.pickle'):
+        file = open("server_data.pickle", "rb")
+        servers = pickle.load(file)
+        file.close()
+    else: 
+        servers = [
+            server("reddit.com", 443, "ssl"),
+            server("google.com", 80, "plain"),
+            server("youtube.com", 80, "ping"),
+            server("wikipedia.org", 443, "ssl"),
+        ]
     
     for s in servers:
-        success = checkConnection(s)
-        s.add_history(f"{s.name} - Date: {datetime.now()} - Connection result: {success}")
+        connection_result = checkConnection(s)
+        s.add_history(f"{s.name} - Date: {datetime.now()} - Connection result: {connection_result}")
         print(len(s.history))
 
 
