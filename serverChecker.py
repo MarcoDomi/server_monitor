@@ -62,4 +62,7 @@ def main():
         print(len(s.history))
 
 
+    with open("server_data.pickle", 'wb') as file:
+        pickle.dump(servers, file)
+        
 main()
