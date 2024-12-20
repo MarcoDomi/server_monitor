@@ -64,5 +64,6 @@ def main():
 
     with open("server_data.pickle", 'wb') as file:
         pickle.dump(servers, file)
-        
-main()
+
+if __name__ == "__main__":    
+    main()
