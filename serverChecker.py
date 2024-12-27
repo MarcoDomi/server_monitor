@@ -4,6 +4,7 @@ from datetime import datetime
 import pickle
 import subprocess
 import os
+import gmail
 
 class server:
     def __init__(self, name, port, type):
@@ -42,6 +43,7 @@ def checkConnection(server):
 
     return success
 
+
 def main():
 
     if os.path.exists('server_data.pickle'):
@@ -58,8 +60,12 @@ def main():
     
     for s in servers:
         connection_result = checkConnection(s)
-        s.add_history(f"{s.name} - Date: {datetime.now()} - Connection result: {connection_result}")
+        msg = f"{s.name} - Date: {datetime.now()} - Connection result: {connection_result}"
+        s.add_history(msg)
         print(len(s.history))
+
+        if not connection_result:
+            gmail.send_mail("Connection Error", msg)
 
 
     with open("server_data.pickle", 'wb') as file:
