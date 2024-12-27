@@ -11,6 +11,7 @@ class server:
         self.name = name
         self.port = port
         self.connectionType = type
+        self.alert = True
 
         self.history = []
     
@@ -41,6 +42,9 @@ def checkConnection(server):
     except:
         print("Unknown error?")
 
+    if success and server.alert == False: #if server connection is successful after previous failed attempt then reset the alert flag
+        server.alert = True
+
     return success
 
 
@@ -64,8 +68,9 @@ def main():
         s.add_history(msg)
         print(len(s.history))
 
-        if not connection_result:
+        if not connection_result and s.alert:
             gmail.send_mail("Connection Error", msg)
+            s.alert = False
 
 
     with open("server_data.pickle", 'wb') as file:
