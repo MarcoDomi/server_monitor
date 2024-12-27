@@ -60,6 +60,7 @@ def main():
             server("google.com", 80, "plain"),
             server("youtube.com", 80, "ping"),
             server("wikipedia.org", 443, "ssl"),
+            server('idk', 443, 'ssl')
         ]
     
     for s in servers:

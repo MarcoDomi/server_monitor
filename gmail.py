@@ -1,9 +1,15 @@
 import smtplib
 from email.message import EmailMessage
 
+def get_email_info():
+    with open("email-info.txt") as file:
+        email = file.readline()
+        code = file.readline()
+
+    return (email, code)
 
 def send_mail(subject, content):
-    email = "marcod082@gmail.com"
+    email, code = get_email_info()
 
     msg = EmailMessage()
     msg.set_content(content)
@@ -15,6 +21,6 @@ def send_mail(subject, content):
     server.ehlo()
     server.starttls()
 
-    server.login(email, "xyau bflg qqwp lfgi")
+    server.login(email, code)
     server.send_message(msg)
     server.quit()
