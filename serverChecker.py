@@ -60,12 +60,11 @@ def main():
             server("google.com", 80, "plain"),
             server("youtube.com", 80, "ping"),
             server("wikipedia.org", 443, "ssl"),
-            server('idk', 443, 'ssl')
         ]
     
     for s in servers:
         connection_result = checkConnection(s)
-        msg = f"{s.name} - Date: {datetime.now()} - Connection result: {connection_result}"
+        msg = f"{s.name} - Date: {datetime.now()} - Connection result: {connection_result}\n"
         s.add_history(msg)
         print(len(s.history))
 
