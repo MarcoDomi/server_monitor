@@ -15,5 +15,29 @@ def write_server_history():
             file.write("\n-----------\n")
             file.writelines(s.history)
 
+def getConnectionResult(item):
+    index = item.find("True")
+    if index == -1:
+        index = item.find("False")
+
+    result = item[index:].rstrip('\n')
+
+    return result
+
+def failRate():
+    for s in servers:
+        result_count = len(s.history)
+        fail_count = 0
+        for item in s.history:
+            connectResult = bool(getConnectionResult(item))
+
+            if connectResult == False:
+                fail_count += 1
+
+        fail_percentage = fail_count / result_count
+        print(f"{s.name} connect fail rate: {fail_percentage}%")
+
+
 if __name__ == "__main__":
-    write_server_history()
+    #write_server_history()
+    failRate()
